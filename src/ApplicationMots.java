@@ -119,7 +119,7 @@ public class ApplicationMots {
 
         }
         System.out.println("___________________Fini !!!___________________");
-        System.out.println("Entré pour rejouer");
+        System.out.println("Press Enter to continue");
         saisieUtilisateur.nextLine();
         saisieUtilisateur.nextLine();
         menu(saisieUtilisateur);

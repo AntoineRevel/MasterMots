@@ -118,7 +118,7 @@ public class MotsPossible {
                 }
             } else if (rep == Reponse.Rep.NotInTheWorld) {
                 for (String str : motsPossible) {
-                    if (str.contains(String.valueOf(c)) && !(letresPresente.contains(c))) {
+                    if (str.contains(String.valueOf(c))) {//&& !(letresPresente.contains(c))
                         newMotsPossible.remove(str);
                     }
                 }
