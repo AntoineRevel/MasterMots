@@ -177,8 +177,7 @@ public class MotsPossible {
     }
 
     public String random(){
-        //return motsPossible.get((int)(Math.random() * ((motsPossible.size()))));
-        return"basis";
+        return motsPossible.get((int)(Math.random() * ((motsPossible.size()))));
     }
 
     public List<String> getMotsPossible() {
