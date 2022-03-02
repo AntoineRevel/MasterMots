@@ -101,7 +101,12 @@ public class MotsPossible {
         for (int i = 0; i < longueur; i++) {
             Reponse.Rep rep = reponse.getReponse(i);
             char c = reponse.getProposition(i);
-            letresPresente.add(c);
+            if (rep == Reponse.Rep.Correct || rep== Reponse.Rep.WrongSpot) letresPresente.add(c);
+        }
+
+        for (int i = 0; i < longueur; i++) {
+            Reponse.Rep rep = reponse.getReponse(i);
+            char c = reponse.getProposition(i);
             if (rep == Reponse.Rep.Correct) {
                 for (String str : motsPossible) {
                     if (str.charAt(i) != c) {
@@ -109,17 +114,16 @@ public class MotsPossible {
                     }
                 }
             } else if (rep == Reponse.Rep.WrongSpot) {
-
                 for (String str : motsPossible) {
                     if (!(str.contains(String.valueOf(c)) && str.indexOf(c) != i)) {
                         newMotsPossible.remove(str);
-
                     }
                 }
             } else if (rep == Reponse.Rep.NotInTheWorld) {
                 for (String str : motsPossible) {
-                    if (str.contains(String.valueOf(c))) {//&& !(letresPresente.contains(c))
+                    if (countOccurences(str,c,0)>Collections.frequency(letresPresente,c)){
                         newMotsPossible.remove(str);
+
                     }
                 }
             }
@@ -166,18 +170,21 @@ public class MotsPossible {
         }
         if (listMeilleur.size()==1){
             System.out.print("La meilleure proposition est ");
-            System.out.print(ANSI_RED+ listMeilleur.get(0)+ANSI_RESET);
+            System.out.print(ANSI_RED+ listMeilleur.get(0)+" "+ANSI_RESET);
         } else {
             System.out.println("Les mots qui retire le plus sont : ");
-            System.out.println(listMeilleur);
+            for (int j=0;j<listMeilleur.size();j++){
+                System.out.println((j+1)+"- "+listMeilleur.get(j));
+            }
         }
         double esp=(double)con;
-        System.out.println(" avec une espérence de "+con +" mots éliminé.");//String.format("%.3f",esp)
+        System.out.println("avec une espérence de "+con +" mots éliminé.");//String.format("%.3f",esp)
         return listMeilleur;
     }
 
     public String random(){
         return motsPossible.get((int)(Math.random() * ((motsPossible.size()))));
+        //return "chugs";
     }
 
     public List<String> getMotsPossible() {
@@ -186,5 +193,15 @@ public class MotsPossible {
 
     public List<Reponse.Rep[]> getPossibiliter() {
         return possibiliter;
+    }
+
+    private static int countOccurences(String someString, char searchedChar, int index) {
+        if (index >= someString.length()) {
+            return 0;
+        }
+
+        int count = someString.charAt(index) == searchedChar ? 1 : 0;
+        return count + countOccurences(
+                someString, searchedChar, index + 1);
     }
 }

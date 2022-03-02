@@ -10,6 +10,10 @@ import static java.lang.System.exit;
 public class ApplicationMots {
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
+
+    public static final String cheminFR="ressources/motsFR.txt";
+    public static final String cheminAn="ressources/mots.txt";
 
     public static void printMenu(String[] options){
         for (String option : options){
@@ -25,7 +29,7 @@ public class ApplicationMots {
             "5- Exit",
     };
 
-    private static String langue="ressources/mots.txt";
+    private static String langue=cheminAn;
     private static int longeur=5;
 
     public static void main(String[] args) {
@@ -39,7 +43,6 @@ public class ApplicationMots {
         printMenu(options);
         int option;
         while (true){
-            try {
                 option = saisieUtilisateur.nextInt();
                 switch (option){
                     case 1: start(saisieUtilisateur); break;
@@ -49,11 +52,6 @@ public class ApplicationMots {
                             menu(saisieUtilisateur); break;
                     case 5: exit(0);
                 }
-            }
-            catch (Exception ex){
-                System.out.println("Please enter an integer value between 1 and " + options.length);
-                saisieUtilisateur.next();
-            }
         }
 
     }
@@ -71,8 +69,8 @@ public class ApplicationMots {
         try {
             option = saisieUtilisateur.nextInt();
             switch (option){
-                case 1: langue="ressources/motsFR.txt"; break;
-                case 2: langue="ressources/mots.txt"; break;
+                case 1: langue=cheminFR; break;
+                case 2: langue=cheminAn; break;
                 case 3: exit(0);
             }
         }
@@ -88,8 +86,8 @@ public class ApplicationMots {
 
     public static void start(Scanner saisieUtilisateur){
         System.out.print("On joue avec des mots de "+longeur+" lettres en ");
-        if(langue.equals("mots.txt")) System.out.println("anglais");
-        if(langue.equals("motsFR.txt")) System.out.println("f00rancais");
+        if(langue.equals(cheminAn)) System.out.println("anglais");
+        if(langue.equals(cheminFR)) System.out.println("francais");
         MotsPossible MP=new MotsPossible(longeur,langue);
         //MP.premier();
         String premiereProp=MP.random();
@@ -111,8 +109,11 @@ public class ApplicationMots {
             if (choix.size()==1){
                 prop=choix.get(0);
             } else {
-                System.out.print("Proposition de mot : ");
-                prop=saisieUtilisateur.next();
+                int indice;
+                System.out.print("Numéros du mot proposé : ");
+                indice=saisieUtilisateur.nextInt();
+                prop=choix.get(indice-1);
+                System.out.println("Proposition : "+ANSI_RED+prop+ANSI_RESET);
             }
             System.out.print("Réponse du jeux : ");
             MP.elimination(new Reponse(prop,saisieUtilisateur.next()));
