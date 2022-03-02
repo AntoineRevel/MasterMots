@@ -16,6 +16,7 @@ public class ApplicationMots {
     public static final String cheminAn="ressources/mots.txt";
 
     public static void printMenu(String[] options){
+        System.out.println("_____Menu_____");
         for (String option : options){
             System.out.println(option);
         }
@@ -35,8 +36,6 @@ public class ApplicationMots {
     public static void main(String[] args) {
         Scanner saisieUtilisateur = new Scanner(System.in);
         menu(saisieUtilisateur);
-
-
     }
 
     private static void menu(Scanner saisieUtilisateur){
@@ -85,6 +84,7 @@ public class ApplicationMots {
 
 
     public static void start(Scanner saisieUtilisateur){
+        System.out.println("https://hellowordl.net");
         System.out.print("On joue avec des mots de "+longeur+" lettres en ");
         if(langue.equals(cheminAn)) System.out.println("anglais");
         if(langue.equals(cheminFR)) System.out.println("francais");
