@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="MasterMots:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/MasterMots_jar</output-path>
+    <root id="archive" name="MasterMots.jar">
+      <element id="module-output" name="MasterMots" />
+    </root>
+  </artifact>
+</component>
