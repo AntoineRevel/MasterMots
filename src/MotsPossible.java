@@ -90,7 +90,7 @@ public class MotsPossible {
         int nbElimination=motsPossible.size()-probaXsize;
         int mult=probaXsize*nbElimination;
         //if(mult!=0) div=div+nbElimination;
-        div=div+nbElimination;
+        div=div+probaXsize;
         //System.out.print(mult+"="+probaXsize+"*"+nbElimination+",");
         return (double)mult;
     }
@@ -115,8 +115,16 @@ public class MotsPossible {
                 }
             } else if (rep == Reponse.Rep.WrongSpot) {
                 for (String str : motsPossible) {
-                    if (!(str.contains(String.valueOf(c)) && str.indexOf(c) != i)) {
+                    if (!(str.contains(String.valueOf(c)))) {
                         newMotsPossible.remove(str);
+                    }
+                    for (int index = str.indexOf(c);
+                         index >= 0;
+                         index = str.indexOf(c, index + 1))
+                    {
+                        if (index==i){
+                            newMotsPossible.remove(str);
+                        }
                     }
                 }
             } else if (rep == Reponse.Rep.NotInTheWorld) {
@@ -141,6 +149,7 @@ public class MotsPossible {
         for (Reponse.Rep[] rep : possibiliter) {
             Esperance=Esperance+proba(mot,rep);
         }
+        //System.out.println("somme= "+div);
         return Esperance;
     }
 
@@ -177,8 +186,8 @@ public class MotsPossible {
                 System.out.println((j+1)+"- "+listMeilleur.get(j));
             }
         }
-        double esp=(double)con;
-        System.out.println("avec une espérence de "+con +" mots éliminé.");//String.format("%.3f",esp)
+        double esp=(double)con/ motsPossible.size();
+        System.out.println("avec une espérence de "+String.format("%.3f",esp) +" mots éliminé.");
         return listMeilleur;
     }
 
