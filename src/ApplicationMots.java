@@ -18,14 +18,14 @@ public class ApplicationMots {
 
         System.out.print("Choose your option : ");
     }
-    private static String[] options = {"1- Jouer ",
+    private final static String[] options = {"1- Jouer ",
             "2- Langue",
             "3- Longueur mots",
             "4- Surprise",
             "5- Exit",
     };
 
-    private static String langue="mots.txt";
+    private static String langue="ressources/mots.txt";
     private static int longeur=5;
 
     public static void main(String[] args) {
@@ -37,7 +37,7 @@ public class ApplicationMots {
 
     private static void menu(Scanner saisieUtilisateur){
         printMenu(options);
-        int option=1;
+        int option;
         while (true){
             try {
                 option = saisieUtilisateur.nextInt();
@@ -67,12 +67,12 @@ public class ApplicationMots {
     private static void choixLangue(Scanner saisieUtilisateur) {
         System.out.println("1- Francais");
         System.out.println("2- Anglais");
-        int option=0;
+        int option;
         try {
             option = saisieUtilisateur.nextInt();
             switch (option){
-                case 1: langue="motsFR.txt"; break;
-                case 2: langue="mots.txt"; break;
+                case 1: langue="ressources/motsFR.txt"; break;
+                case 2: langue="ressources/mots.txt"; break;
                 case 3: exit(0);
             }
         }

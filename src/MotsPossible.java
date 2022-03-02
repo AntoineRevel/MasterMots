@@ -10,13 +10,11 @@ public class MotsPossible {
     private final int longueur;
     private final List<Reponse.Rep[]> possibiliter;
     private List<String> motsPossible;
-    private String langue;
 
     private int div;
 
 
     public MotsPossible(int longueur,String langue) {
-        this.langue=langue;
         File doc = new File(langue);
         Mots mots = new Mots(doc);
         this.longueur = longueur;
