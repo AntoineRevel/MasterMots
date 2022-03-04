@@ -6,6 +6,7 @@ public class MotsPossible {
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_gras = "\u001B[1m";
 
     private final int longueur;
     private final List<Reponse.Rep[]> possibiliter;
@@ -77,7 +78,7 @@ public class MotsPossible {
         this.motsPossible = elimine(reponse);
        int mtm=motsPossible.size();
        int dif=avant-mtm;
-        System.out.println("On avait "+ avant +" mots possible et on en élimine " +dif+".");
+        System.out.println("On avait "+ avant +" mots possible et on en élimine "+ANSI_gras +dif+ANSI_RESET+".");
         System.out.println("On a donc "+mtm+" mots restant :");
         if(motsPossible.size()==1){
             System.out.println(ANSI_GREEN+ motsPossible.get(0)+ANSI_RESET);
@@ -188,7 +189,7 @@ public class MotsPossible {
             }
         }
         double esp=(double)con;
-        System.out.println("avec une espérence de "+String.format("%.3f",esp) +" mots éliminé.");
+        System.out.println("avec une espérence de "+ANSI_gras+String.format("%.3f",esp) +ANSI_RESET+" mots éliminé.");
         return listMeilleur;
     }
 
