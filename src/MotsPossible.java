@@ -15,13 +15,23 @@ public class MotsPossible {
     private int div;
 
 
-    public MotsPossible(int longueur,String langue) {
+    public MotsPossible(int longueur, String langue) {
         File doc = new File(langue);
         Mots mots = new Mots(doc);
         this.longueur = longueur;
         motsPossible = mots.motsde(longueur);
         this.possibiliter = possibiliter();
 
+    }
+
+    private static int countOccurences(String someString, char searchedChar, int index) {
+        if (index >= someString.length()) {
+            return 0;
+        }
+
+        int count = someString.charAt(index) == searchedChar ? 1 : 0;
+        return count + countOccurences(
+                someString, searchedChar, index + 1);
     }
 
     private List<Reponse.Rep[]> possibiliter() {
@@ -72,38 +82,37 @@ public class MotsPossible {
         return null;
     }
 
-
     public void elimination(Reponse reponse) {
-        int avant=motsPossible.size();
+        int avant = motsPossible.size();
         this.motsPossible = elimine(reponse);
-       int mtm=motsPossible.size();
-       int dif=avant-mtm;
-        System.out.println("On avait "+ avant +" mots possible et on en élimine "+ANSI_gras +dif+ANSI_RESET+".");
-        System.out.println("On a donc "+mtm+" mots restant :");
-        if(motsPossible.size()==1){
-            System.out.println(ANSI_GREEN+ motsPossible.get(0)+ANSI_RESET);
+        int mtm = motsPossible.size();
+        int dif = avant - mtm;
+        System.out.println("On avait " + avant + " mots possible et on en élimine " + ANSI_gras + dif + ANSI_RESET + ".");
+        System.out.println("On a donc " + mtm + " mots restant :");
+        if (motsPossible.size() == 1) {
+            System.out.println(ANSI_GREEN + motsPossible.get(0) + ANSI_RESET);
         }
         //System.out.println(motsPossible);
     }
 
     private double proba(String mot, Reponse.Rep[] reponse) {
-        int probaXsize=elimine(new Reponse(mot,reponse)).size();
-        int nbElimination=motsPossible.size()-probaXsize;
-        int mult=probaXsize*nbElimination;
+        int probaXsize = elimine(new Reponse(mot, reponse)).size();
+        int nbElimination = motsPossible.size() - probaXsize;
+        int mult = probaXsize * nbElimination;
         //if(mult!=0) div=div+nbElimination;
-        div=div+probaXsize;
+        div = div + probaXsize;
         //System.out.print(mult+"="+probaXsize+"*"+nbElimination+",");
 
-        return (double)mult;
+        return (double) mult;
     }
 
-    private List<String> elimine(Reponse reponse){
+    private List<String> elimine(Reponse reponse) {
         List<String> newMotsPossible = new ArrayList<>(motsPossible);
-        List<Character> letresPresente=new ArrayList<>();
+        List<Character> letresPresente = new ArrayList<>();
         for (int i = 0; i < longueur; i++) {
             Reponse.Rep rep = reponse.getReponse(i);
             char c = reponse.getProposition(i);
-            if (rep == Reponse.Rep.Correct || rep== Reponse.Rep.WrongSpot) letresPresente.add(c);
+            if (rep == Reponse.Rep.Correct || rep == Reponse.Rep.WrongSpot) letresPresente.add(c);
         }
 
         for (int i = 0; i < longueur; i++) {
@@ -122,16 +131,15 @@ public class MotsPossible {
                     }
                     for (int index = str.indexOf(c);
                          index >= 0;
-                         index = str.indexOf(c, index + 1))
-                    {
-                        if (index==i){
+                         index = str.indexOf(c, index + 1)) {
+                        if (index == i) {
                             newMotsPossible.remove(str);
                         }
                     }
                 }
             } else if (rep == Reponse.Rep.NotInTheWorld) {
                 for (String str : motsPossible) {
-                    if (countOccurences(str,c,0)>Collections.frequency(letresPresente,c)){
+                    if (countOccurences(str, c, 0) > Collections.frequency(letresPresente, c)) {
                         newMotsPossible.remove(str);
 
                     }
@@ -147,54 +155,54 @@ public class MotsPossible {
 
     public double calculEsperance(String mot) {
         double Esperance = 0;
-        div=0;
+        div = 0;
         for (Reponse.Rep[] rep : possibiliter) {
-            Esperance=Esperance+proba(mot,rep);
+            Esperance = Esperance + proba(mot, rep);
         }
         //System.out.print("somme= "+div);
-        return Esperance/div;
+        return Esperance / div;
     }
 
     public List<String> choix() {
-        List<String> listMeilleur=new ArrayList<>();
-        double con=0;
+        List<String> listMeilleur = new ArrayList<>();
+        double con = 0;
         HashMap<String, Double> dic = new HashMap<>();
-        int i=1;
-        int T= motsPossible.size();
+        int i = 1;
+        int T = motsPossible.size();
         for (String str : motsPossible) {
-            double E=calculEsperance(str);
-            System.out.print("["+i+"/"+T+"] ");
-            System.out.println(str+" avec un score de: "+E);
+            double E = calculEsperance(str);
+            System.out.print("[" + i + "/" + T + "] ");
+            System.out.println(str + " avec un score de: " + E);
             i++;
-            dic.put(str,E);
-            double max=E;
-            if (con<max){
-                con=max;
+            dic.put(str, E);
+            double max = E;
+            if (con < max) {
+                con = max;
             }
         }
 
-        for (Map.Entry<String,Double> e:dic.entrySet()){
-            if (e.getValue()==con){
+        for (Map.Entry<String, Double> e : dic.entrySet()) {
+            if (e.getValue() == con) {
                 listMeilleur.add(e.getKey());
             }
 
         }
-        if (listMeilleur.size()==1){
+        if (listMeilleur.size() == 1) {
             System.out.print("La meilleure proposition est ");
-            System.out.print(ANSI_RED+ listMeilleur.get(0)+" "+ANSI_RESET);
+            System.out.print(ANSI_RED + listMeilleur.get(0) + " " + ANSI_RESET);
         } else {
             System.out.println("Les mots qui retire le plus sont : ");
-            for (int j=0;j<listMeilleur.size();j++){
-                System.out.println((j+1)+"- "+listMeilleur.get(j));
+            for (int j = 0; j < listMeilleur.size(); j++) {
+                System.out.println((j + 1) + "- " + listMeilleur.get(j));
             }
         }
-        double esp=(double)con;
-        System.out.println("avec une espérence de "+ANSI_gras+String.format("%.3f",esp) +ANSI_RESET+" mots éliminé.");
+        double esp = (double) con;
+        System.out.println("avec une espérence de " + ANSI_gras + String.format("%.3f", esp) + ANSI_RESET + " mots éliminé.");
         return listMeilleur;
     }
 
-    public String random(){
-        return motsPossible.get((int)(Math.random() * ((motsPossible.size()))));
+    public String random() {
+        return motsPossible.get((int) (Math.random() * ((motsPossible.size()))));
         //return "chugs";
     }
 
@@ -208,15 +216,5 @@ public class MotsPossible {
 
     public List<Reponse.Rep[]> getPossibiliter() {
         return possibiliter;
-    }
-
-    private static int countOccurences(String someString, char searchedChar, int index) {
-        if (index >= someString.length()) {
-            return 0;
-        }
-
-        int count = someString.charAt(index) == searchedChar ? 1 : 0;
-        return count + countOccurences(
-                someString, searchedChar, index + 1);
     }
 }

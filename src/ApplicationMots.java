@@ -1,11 +1,6 @@
-
-
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
-
-//https://hellowordl.net
 
 import static java.lang.System.exit;
 
@@ -15,52 +10,60 @@ public class ApplicationMots {
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_gras = "\u001B[1m";
 
-    public static final String cheminFR="ressources/motsFR.txt";
-    public static final String cheminAn="ressources/mots.txt";
-
-    public static void printMenu(String[] options){
-        System.out.println("_____Menu_____");
-        for (String option : options){
-            System.out.println(option);
-        }
-
-        System.out.print("Choose your option : ");
-    }
+    public static final String cheminFR = "ressources/motsFR.txt";
+    public static final String cheminAn = "ressources/mots.txt";
     private final static String[] options = {"1- Jouer ",
             "2- Langue",
             "3- Longueur mots",
             "4- Surprise",
             "5- Exit",
     };
+    private static String langue = cheminAn;
+    private static int longeur = 5;
 
-    private static String langue=cheminAn;
-    private static int longeur=5;
+    public static void printMenu(String[] options) {
+        System.out.println("_____Menu_____");
+        for (String option : options) {
+            System.out.println(option);
+        }
+
+        System.out.print("Choose your option : ");
+    }
 
     public static void main(String[] args) {
         Scanner saisieUtilisateur = new Scanner(System.in);
         menu(saisieUtilisateur);
     }
 
-    private static void menu(Scanner saisieUtilisateur){
+    private static void menu(Scanner saisieUtilisateur) {
         printMenu(options);
         int option;
-        while (true){
-                option = saisieUtilisateur.nextInt();
-                switch (option){
-                    case 1: start(saisieUtilisateur); break;
-                    case 2: choixLangue(saisieUtilisateur); break;
-                    case 3: choixLongeur(saisieUtilisateur); break;
-                    case 4: System.out.println("Mon bébé Fabien");
-                            menu(saisieUtilisateur); break;
-                    case 5: exit(0);
-                }
+        while (true) {
+            option = saisieUtilisateur.nextInt();
+            switch (option) {
+                case 1:
+                    start(saisieUtilisateur);
+                    break;
+                case 2:
+                    choixLangue(saisieUtilisateur);
+                    break;
+                case 3:
+                    choixLongeur(saisieUtilisateur);
+                    break;
+                case 4:
+                    System.out.println("Mon bébé Fabien");
+                    menu(saisieUtilisateur);
+                    break;
+                case 5:
+                    exit(0);
+            }
         }
 
     }
 
     private static void choixLongeur(Scanner saisieUtilisateur) {
         System.out.print("Entré la longeur voulus : ");
-        longeur=saisieUtilisateur.nextInt();
+        longeur = saisieUtilisateur.nextInt();
         menu(saisieUtilisateur);
     }
 
@@ -70,13 +73,17 @@ public class ApplicationMots {
         int option;
         try {
             option = saisieUtilisateur.nextInt();
-            switch (option){
-                case 1: langue=cheminFR; break;
-                case 2: langue=cheminAn; break;
-                case 3: exit(0);
+            switch (option) {
+                case 1:
+                    langue = cheminFR;
+                    break;
+                case 2:
+                    langue = cheminAn;
+                    break;
+                case 3:
+                    exit(0);
             }
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             System.out.println("Please enter an integer value between 1 and " + options.length);
             saisieUtilisateur.next();
         }
@@ -85,37 +92,36 @@ public class ApplicationMots {
     }
 
 
-
-    public static void start(Scanner saisieUtilisateur){
+    public static void start(Scanner saisieUtilisateur) {
         System.out.println("https://hellowordl.net");
-        System.out.print("On joue avec des mots de "+longeur+" lettres en ");
-        if(langue.equals(cheminAn)) System.out.println("anglais");
-        if(langue.equals(cheminFR)) System.out.println("francais");
-        MotsPossible MP=new MotsPossible(longeur,langue);
+        System.out.print("On joue avec des mots de " + longeur + " lettres en ");
+        if (langue.equals(cheminAn)) System.out.println("anglais");
+        if (langue.equals(cheminFR)) System.out.println("francais");
+        MotsPossible MP = new MotsPossible(longeur, langue);
         //MP.premier();
         System.out.println("Pour coder la réponse du jeux :");
         System.out.println("0- pour une lettre qui n'est pas dans le mot (gris)");
         System.out.println("1- pour une lettre dans le mot mais pas au bon endroit (jaunes)");
         System.out.println("2- pour une lettre au bon endroit (vert)");
-        String firtProp=ouverture(MP);
+        String firtProp = ouverture(MP);
         System.out.print("Réponse du jeux : ");
-        MP.elimination(new Reponse(firtProp,saisieUtilisateur.next()));
+        //MP.elimination(new Reponse(firtProp, saisieUtilisateur.next()));
 
-        while(MP.getMotsPossible().size()>1){
+        while (MP.getMotsPossible().size() > 1) {
             String prop;
-            List<String> choix=MP.choix();
+            List<String> choix = MP.choix();
 
-            if (choix.size()==1){
-                prop=choix.get(0);
+            if (choix.size() == 1) {
+                prop = choix.get(0);
             } else {
                 int indice;
                 System.out.print("Numéros du mot proposé : ");
-                indice=saisieUtilisateur.nextInt();
-                prop=choix.get(indice-1);
-                System.out.println("Proposition : "+ANSI_RED+prop+ANSI_RESET);
+                indice = saisieUtilisateur.nextInt();
+                prop = choix.get(indice - 1);
+                System.out.println("Proposition : " + ANSI_RED + prop + ANSI_RESET);
             }
             System.out.print("Réponse du jeux : ");
-            MP.elimination(new Reponse(prop,saisieUtilisateur.next()));
+            MP.elimination(new Reponse(prop, saisieUtilisateur.next()));
 
         }
         System.out.println("___________________Fini !!!___________________");
@@ -126,21 +132,30 @@ public class ApplicationMots {
 
     }
 
-    private static String ouverture(MotsPossible MP){
-        HashMap<Integer,String> bestOuverture=new HashMap<>();
-        bestOuverture.put(3,"eat"+ANSI_RESET+" avec une espérence de "+ANSI_gras+"462,316"+ANSI_RESET+" mots éliminé.");
-        bestOuverture.put(4,"sale"+ANSI_RESET+" avec une espérence de "+ANSI_gras+"2146,642"+ANSI_RESET+" mots éliminé");
-        int longeur=MP.getLongueur();
+    private static String ouverture(MotsPossible MP) {
+        HashMap<Integer, String> bestOuverture = new HashMap<>();
+        bestOuverture.put(2,"ho"+ ANSI_RESET + " avec une espérence de " + ANSI_gras + "27.489" + ANSI_RESET + " mots éliminé.");
+        bestOuverture.put(3, "eat" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "462.316" + ANSI_RESET + " mots éliminé.");
+        bestOuverture.put(4, "sale" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "2146.642" + ANSI_RESET + " mots éliminé");
+        int longeur = MP.getLongueur();
         String prop;
-        if (bestOuverture.containsKey(longeur)){
-            prop=bestOuverture.get(longeur);
+        if (bestOuverture.containsKey(longeur)) {
+            prop = bestOuverture.get(longeur);
             System.out.print("Meilleur ouverture : ");
-            System.out.println(ANSI_RED+prop);
-            return prop.substring(0,longeur);
+            System.out.println(ANSI_RED + prop);
+            return prop.substring(0, longeur);
         }
-        prop=MP.random();
-        System.out.print("Proposition d'une ouverture aléatoire : "+ANSI_RED+prop+ANSI_RESET+" avec une espérence de "+ANSI_gras+String.format("%.3f",MP.calculEsperance(prop))+ANSI_RESET+" mots éliminé.");
-        System.out.println();
+        prop = MP.random();
+        if (longeur == 5) {
+            System.out.println("Proposition d'une ouverture aléatoire : " + ANSI_RED + prop + ANSI_RESET + " avec une espérence de " + ANSI_gras + String.format("%.3f", MP.calculEsperance(prop)) + ANSI_RESET + " mots éliminé.");
+        } else if (longeur == 6) {
+            System.out.println("Patience calcul de l'esperance long");
+            System.out.println("Proposition d'une ouverture aléatoire : " + ANSI_RED + prop + ANSI_RESET + " avec une espérence de " + ANSI_gras + String.format("%.3f", MP.calculEsperance(prop)) + ANSI_RESET + " mots éliminé.");
+        } else {
+            System.out.println("Proposition d'une ouverture aléatoire : " + ANSI_RED + prop + ANSI_RESET);
+        }
+
+        //System.out.println(prop);
         return prop;
     }
 }
