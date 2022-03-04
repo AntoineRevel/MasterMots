@@ -98,7 +98,7 @@ public class ApplicationMots {
         System.out.println("1- pour une lettre dans le mot mais pas au bon endroit (jaunes)");
         System.out.println("2- pour une lettre au bon endroit (vert)");
         String firtProp=ouverture(MP);
-        System.out.println("Réponse du jeux : ");
+        System.out.print("Réponse du jeux : ");
         MP.elimination(new Reponse(firtProp,saisieUtilisateur.next()));
 
         while(MP.getMotsPossible().size()>1){
