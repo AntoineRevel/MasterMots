@@ -145,7 +145,7 @@ public class MotsPossible {
 
     }
 
-    private double calculEsperance(String mot) {
+    public double calculEsperance(String mot) {
         double Esperance = 0;
         div=0;
         for (Reponse.Rep[] rep : possibiliter) {
@@ -196,6 +196,10 @@ public class MotsPossible {
     public String random(){
         return motsPossible.get((int)(Math.random() * ((motsPossible.size()))));
         //return "chugs";
+    }
+
+    public int getLongueur() {
+        return longueur;
     }
 
     public List<String> getMotsPossible() {

@@ -1,6 +1,7 @@
 
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -12,6 +13,7 @@ public class ApplicationMots {
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_gras = "\u001B[1m";
 
     public static final String cheminFR="ressources/motsFR.txt";
     public static final String cheminAn="ressources/mots.txt";
@@ -90,9 +92,14 @@ public class ApplicationMots {
         if(langue.equals(cheminAn)) System.out.println("anglais");
         if(langue.equals(cheminFR)) System.out.println("francais");
         MotsPossible MP=new MotsPossible(longeur,langue);
-        //debutRandom(MP,saisieUtilisateur);
-
-
+        //MP.premier();
+        System.out.println("Pour coder la réponse du jeux :");
+        System.out.println("0- pour une lettre qui n'est pas dans le mot (gris)");
+        System.out.println("1- pour une lettre dans le mot mais pas au bon endroit (jaunes)");
+        System.out.println("2- pour une lettre au bon endroit (vert)");
+        String firtProp=ouverture(MP);
+        System.out.println("Réponse du jeux : ");
+        MP.elimination(new Reponse(firtProp,saisieUtilisateur.next()));
 
         while(MP.getMotsPossible().size()>1){
             String prop;
@@ -119,20 +126,21 @@ public class ApplicationMots {
 
     }
 
-    private static void debutRandom(MotsPossible MP,Scanner saisieUtilisateur){
-        //MP.premier();
-        String premiereProp=MP.random();
-        System.out.println("Proposition du premier mots aléatoire :");
-        System.out.println(premiereProp);
-
-        //String prope=saisieUtilisateur.next();
-        System.out.println("Pour coder la réponse du jeux :");
-        System.out.println("0- pour une letre qui n'est pas dans le mot (gris)");
-        System.out.println("1- pour une letre dans le mot mais pas au bon endroit (jaunes)");
-        System.out.println("2- pour une letre au bon endroit (vert)");
-        System.out.print("Réponse du jeux : ");
-        MP.elimination(new Reponse(premiereProp,saisieUtilisateur.next()));
-
-
+    private static String ouverture(MotsPossible MP){
+        HashMap<Integer,String> bestOuverture=new HashMap<>();
+        bestOuverture.put(3,"eat"+ANSI_RESET+" avec une espérence de "+ANSI_gras+"462,316"+ANSI_RESET+" mots éliminé.");
+        bestOuverture.put(4,"sale"+ANSI_RESET+" avec une espérence de "+ANSI_gras+"2146,642"+ANSI_RESET+" mots éliminé");
+        int longeur=MP.getLongueur();
+        String prop;
+        if (bestOuverture.containsKey(longeur)){
+            prop =bestOuverture.get(longeur);
+            System.out.print("Meilleur ouverture : ");
+            System.out.println(ANSI_RED+prop);
+            return prop;
+        }
+        prop=MP.random();
+        System.out.print("Proposition d'une ouverture aléatoire : "+ANSI_RED+prop+ANSI_RESET+" avec une espérence de "+ANSI_gras+String.format("%.3f",MP.calculEsperance(prop))+ANSI_RESET+" mots éliminé.");
+        System.out.println();
+        return prop;
     }
 }
