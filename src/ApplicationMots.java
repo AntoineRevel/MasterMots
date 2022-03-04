@@ -90,18 +90,9 @@ public class ApplicationMots {
         if(langue.equals(cheminAn)) System.out.println("anglais");
         if(langue.equals(cheminFR)) System.out.println("francais");
         MotsPossible MP=new MotsPossible(longeur,langue);
-        //MP.premier();
-        String premiereProp=MP.random();
-        System.out.println("Proposition du premier mots aléatoire :");
-        System.out.println(premiereProp);
+        //debutRandom(MP,saisieUtilisateur);
 
-        //String prope=saisieUtilisateur.next();
-        System.out.println("Pour coder la réponse du jeux :");
-        System.out.println("0- pour une letre qui n'est pas dans le mot (gris)");
-        System.out.println("1- pour une letre dans le mot mais pas au bon endroit (jaunes)");
-        System.out.println("2- pour une letre au bon endroit (vert)");
-        System.out.print("Réponse du jeux : ");
-        MP.elimination(new Reponse(premiereProp,saisieUtilisateur.next()));
+
 
         while(MP.getMotsPossible().size()>1){
             String prop;
@@ -125,6 +116,22 @@ public class ApplicationMots {
         saisieUtilisateur.nextLine();
         saisieUtilisateur.nextLine();
         menu(saisieUtilisateur);
+
+    }
+
+    private static void debutRandom(MotsPossible MP,Scanner saisieUtilisateur){
+        //MP.premier();
+        String premiereProp=MP.random();
+        System.out.println("Proposition du premier mots aléatoire :");
+        System.out.println(premiereProp);
+
+        //String prope=saisieUtilisateur.next();
+        System.out.println("Pour coder la réponse du jeux :");
+        System.out.println("0- pour une letre qui n'est pas dans le mot (gris)");
+        System.out.println("1- pour une letre dans le mot mais pas au bon endroit (jaunes)");
+        System.out.println("2- pour une letre au bon endroit (vert)");
+        System.out.print("Réponse du jeux : ");
+        MP.elimination(new Reponse(premiereProp,saisieUtilisateur.next()));
 
 
     }
