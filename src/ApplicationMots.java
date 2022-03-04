@@ -133,10 +133,10 @@ public class ApplicationMots {
         int longeur=MP.getLongueur();
         String prop;
         if (bestOuverture.containsKey(longeur)){
-            prop =bestOuverture.get(longeur);
+            prop=bestOuverture.get(longeur);
             System.out.print("Meilleur ouverture : ");
             System.out.println(ANSI_RED+prop);
-            return prop;
+            return prop.substring(0,longeur);
         }
         prop=MP.random();
         System.out.print("Proposition d'une ouverture aléatoire : "+ANSI_RED+prop+ANSI_RESET+" avec une espérence de "+ANSI_gras+String.format("%.3f",MP.calculEsperance(prop))+ANSI_RESET+" mots éliminé.");
