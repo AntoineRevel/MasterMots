@@ -92,6 +92,7 @@ public class MotsPossible {
         //if(mult!=0) div=div+nbElimination;
         div=div+probaXsize;
         //System.out.print(mult+"="+probaXsize+"*"+nbElimination+",");
+
         return (double)mult;
     }
 
@@ -149,8 +150,8 @@ public class MotsPossible {
         for (Reponse.Rep[] rep : possibiliter) {
             Esperance=Esperance+proba(mot,rep);
         }
-        //System.out.println("somme= "+div);
-        return Esperance;
+        //System.out.print("somme= "+div);
+        return Esperance/div;
     }
 
     public List<String> choix() {
@@ -186,7 +187,7 @@ public class MotsPossible {
                 System.out.println((j+1)+"- "+listMeilleur.get(j));
             }
         }
-        double esp=(double)con/ motsPossible.size();
+        double esp=(double)con;
         System.out.println("avec une espérence de "+String.format("%.3f",esp) +" mots éliminé.");
         return listMeilleur;
     }
