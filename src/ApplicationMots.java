@@ -105,7 +105,7 @@ public class ApplicationMots {
         System.out.println("2- pour une lettre au bon endroit (vert)");
         String firtProp = ouverture(MP);
         System.out.print("Réponse du jeux : ");
-        //MP.elimination(new Reponse(firtProp, saisieUtilisateur.next()));
+        MP.elimination(new Reponse(firtProp, saisieUtilisateur.next()));
 
         while (MP.getMotsPossible().size() > 1) {
             String prop;
@@ -137,6 +137,7 @@ public class ApplicationMots {
         bestOuverture.put(2,"ho"+ ANSI_RESET + " avec une espérence de " + ANSI_gras + "27.489" + ANSI_RESET + " mots éliminé.");
         bestOuverture.put(3, "eat" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "462.316" + ANSI_RESET + " mots éliminé.");
         bestOuverture.put(4, "sale" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "2146.642" + ANSI_RESET + " mots éliminé");
+        bestOuverture.put(5, "tares" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "4175.682" + ANSI_RESET + " mots éliminé");
         int longeur = MP.getLongueur();
         String prop;
         if (bestOuverture.containsKey(longeur)) {
@@ -146,9 +147,7 @@ public class ApplicationMots {
             return prop.substring(0, longeur);
         }
         prop = MP.random();
-        if (longeur == 5) {
-            System.out.println("Proposition d'une ouverture aléatoire : " + ANSI_RED + prop + ANSI_RESET + " avec une espérence de " + ANSI_gras + String.format("%.3f", MP.calculEsperance(prop)) + ANSI_RESET + " mots éliminé.");
-        } else if (longeur == 6) {
+        if (longeur == 6) {
             System.out.println("Patience calcul de l'esperance long");
             System.out.println("Proposition d'une ouverture aléatoire : " + ANSI_RED + prop + ANSI_RESET + " avec une espérence de " + ANSI_gras + String.format("%.3f", MP.calculEsperance(prop)) + ANSI_RESET + " mots éliminé.");
         } else {
