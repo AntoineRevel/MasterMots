@@ -12,6 +12,7 @@ public class MotsPossible {
     private final List<Reponse.Rep[]> possibiliter;
     private List<String> motsPossible;
 
+
     private int div;
 
 
@@ -23,6 +24,8 @@ public class MotsPossible {
         this.possibiliter = possibiliter();
 
     }
+
+
 
     private static int countOccurences(String someString, char searchedChar, int index) {
         if (index >= someString.length()) {

@@ -15,8 +15,7 @@ public class ApplicationMots {
     private final static String[] options = {"1- Jouer ",
             "2- Langue",
             "3- Longueur mots",
-            "4- Surprise",
-            "5- Exit",
+            "4- Exit",
     };
     private static String langue = cheminAn;
     private static int longeur = 5;
@@ -51,10 +50,6 @@ public class ApplicationMots {
                     choixLongeur(saisieUtilisateur);
                     break;
                 case 4:
-                    System.out.println("Mon bébé Fabien");
-                    menu(saisieUtilisateur);
-                    break;
-                case 5:
                     exit(0);
             }
         }
@@ -95,17 +90,17 @@ public class ApplicationMots {
     public static void start(Scanner saisieUtilisateur) {
         System.out.println("https://hellowordl.net");
         System.out.print("On joue avec des mots de " + longeur + " lettres en ");
-        if (langue.equals(cheminAn)) System.out.println("anglais");
-        if (langue.equals(cheminFR)) System.out.println("francais");
+        if (langue.equals(cheminAn)) System.out.println("anglais.");
+        if (langue.equals(cheminFR)) System.out.println("francais.");
         MotsPossible MP = new MotsPossible(longeur, langue);
         //MP.premier();
         System.out.println("Pour coder la réponse du jeux :");
         System.out.println("0- pour une lettre qui n'est pas dans le mot (gris)");
         System.out.println("1- pour une lettre dans le mot mais pas au bon endroit (jaunes)");
         System.out.println("2- pour une lettre au bon endroit (vert)");
-        String firtProp = ouverture(MP);
+        /*String firtProp = ouverture(MP);
         System.out.print("Réponse du jeux : ");
-        MP.elimination(new Reponse(firtProp, saisieUtilisateur.next()));
+        MP.elimination(new Reponse(firtProp, saisieUtilisateur.next()));*/
 
         while (MP.getMotsPossible().size() > 1) {
             String prop;
@@ -134,16 +129,24 @@ public class ApplicationMots {
 
     private static String ouverture(MotsPossible MP) {
         HashMap<Integer, String> bestOuverture = new HashMap<>();
-        bestOuverture.put(2,"ho"+ ANSI_RESET + " avec une espérence de " + ANSI_gras + "27.489" + ANSI_RESET + " mots éliminé.");
-        bestOuverture.put(3, "eat" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "462.316" + ANSI_RESET + " mots éliminé.");
-        bestOuverture.put(4, "sale" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "2146.642" + ANSI_RESET + " mots éliminé");
-        bestOuverture.put(5, "tares" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "4175.682" + ANSI_RESET + " mots éliminé");
+        if (langue.equals(cheminAn)) {
+            bestOuverture.put(2, "ho" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "27.489");
+            bestOuverture.put(3, "eat" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "462.316");
+            bestOuverture.put(4, "sale" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "2146.642");
+            bestOuverture.put(5, "tares" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "4175.682");
+        }
+
+        if (langue.equals(cheminFR)){
+            bestOuverture.put(2, "au" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "48,374");
+            bestOuverture.put(3, "aie" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "374,294");
+
+        }
         int longeur = MP.getLongueur();
         String prop;
         if (bestOuverture.containsKey(longeur)) {
             prop = bestOuverture.get(longeur);
             System.out.print("Meilleur ouverture : ");
-            System.out.println(ANSI_RED + prop);
+            System.out.println(ANSI_RED + prop+ ANSI_RESET + " mots éliminé.");
             return prop.substring(0, longeur);
         }
         prop = MP.random();
