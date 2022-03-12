@@ -98,9 +98,9 @@ public class ApplicationMots {
         System.out.println("0- pour une lettre qui n'est pas dans le mot (gris)");
         System.out.println("1- pour une lettre dans le mot mais pas au bon endroit (jaunes)");
         System.out.println("2- pour une lettre au bon endroit (vert)");
-        /*String firtProp = ouverture(MP);
+        String firtProp = ouverture(MP);
         System.out.print("Réponse du jeux : ");
-        MP.elimination(new Reponse(firtProp, saisieUtilisateur.next()));*/
+        MP.elimination(new Reponse(firtProp, saisieUtilisateur.next()));
 
         while (MP.getMotsPossible().size() > 1) {
             String prop;
@@ -139,6 +139,7 @@ public class ApplicationMots {
         if (langue.equals(cheminFR)){
             bestOuverture.put(2, "au" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "48,374");
             bestOuverture.put(3, "aie" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "374,294");
+            bestOuverture.put(4, "taie" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "1929,883");
 
         }
         int longeur = MP.getLongueur();
