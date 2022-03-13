@@ -10,10 +10,8 @@ public class Reponse {
         this.reponse = reponse;
     }
 
+
     public Reponse(String motPropose, String rep) {
-        if (rep.length() != motPropose.length()) {
-            throw (new IllegalArgumentException("Mauvaisse longeur"));
-        }
         if (rep.length() != motPropose.length()) {
             throw new RuntimeException("mauvaise entré utilisateur, Atendu :" + motPropose.length() + " au lieux de :" + rep.length());
         } else {
@@ -21,14 +19,11 @@ public class Reponse {
             this.proposition = motPropose.toCharArray();
             int i = 0;
             for (String r : rep.split("")) {
-                if (r.equals("0")) {
-                    this.reponse[i] = Rep.NotInTheWorld;
-                } else if (r.equals("1")) {
-                    this.reponse[i] = Rep.WrongSpot;
-                } else if (r.equals("2")) {
-                    this.reponse[i] = Rep.Correct;
-                } else {
-                    throw new RuntimeException("Mauvaise valeur : " + r);
+                switch (r) {
+                    case "0" -> this.reponse[i] = Rep.NotInTheWorld;
+                    case "1" -> this.reponse[i] = Rep.WrongSpot;
+                    case "2" -> this.reponse[i] = Rep.Correct;
+                    default -> throw new RuntimeException("Mauvaise valeur : " + r);
                 }
                 i++;
             }
@@ -53,5 +48,9 @@ public class Reponse {
         Correct,
         WrongSpot,
         NotInTheWorld,
+    }
+
+    public static String verifRep(String rep){
+        return null;
     }
 }

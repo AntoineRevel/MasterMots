@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -19,6 +20,12 @@ public class ApplicationMots {
     };
     private static String langue = cheminAn;
     private static int longeur = 5;
+    private static Scanner saisieUtilisateur;
+
+    public static void main(String[] args) {
+        saisieUtilisateur = new Scanner(System.in);
+        menu();
+    }
 
     public static void printMenu(String[] options) {
         System.out.println("_____Menu_____");
@@ -29,65 +36,91 @@ public class ApplicationMots {
         System.out.print("Choose your option : ");
     }
 
-    public static void main(String[] args) {
-        Scanner saisieUtilisateur = new Scanner(System.in);
-        menu(saisieUtilisateur);
-    }
-
-    private static void menu(Scanner saisieUtilisateur) {
+    private static void menu() {
         printMenu(options);
-        int option;
-        while (true) {
-            option = saisieUtilisateur.nextInt();
-            switch (option) {
+        try {
+            switch (saisieUtilisateur.nextInt()) {
                 case 1:
-                    start(saisieUtilisateur);
+                    start();
                     break;
                 case 2:
-                    choixLangue(saisieUtilisateur);
+                    choixLangue();
                     break;
                 case 3:
-                    choixLongeur(saisieUtilisateur);
+                    choixLongeur();
                     break;
                 case 4:
                     exit(0);
+                default:
+                    System.out.println("Choix incorrect");
+                    menu();
             }
+        } catch (InputMismatchException e){
+            System.out.println("Choix incorrect");
+            saisieUtilisateur.next();
+            menu();
         }
 
+
     }
 
-    private static void choixLongeur(Scanner saisieUtilisateur) {
-        System.out.print("Entré la longeur voulus : ");
-        longeur = saisieUtilisateur.nextInt();
-        menu(saisieUtilisateur);
+    private static void choixLongeur() {
+        try {
+            System.out.print("Entré la longeur voulus : ");
+            longeur = setLongeur(saisieUtilisateur.nextInt());
+            System.out.println("On joue avec des mots de " + ANSI_gras + longeur + ANSI_RESET + " lettres");
+            menu();
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            choixLongeur();
+        } catch (InputMismatchException e){
+            System.out.println("Entrer un nombre");
+            saisieUtilisateur.next();
+            choixLongeur();
+        }
     }
 
-    private static void choixLangue(Scanner saisieUtilisateur) {
+    private static int setLongeur(int i) {
+        if (i < 1 || i > 20) {
+            throw new IllegalArgumentException("La longeur doit etre comprise entre 1 et 20 et pas : " + i);
+        } else {
+            return i;
+        }
+    }
+
+    private static void choixLangue() {
         System.out.println("1- Francais");
         System.out.println("2- Anglais");
-        int option;
         try {
-            option = saisieUtilisateur.nextInt();
-            switch (option) {
+            System.out.print("Choix : ");
+            switch (saisieUtilisateur.nextInt()) {
                 case 1:
-                    langue = cheminFR;
+                    setLangue(cheminFR);
                     break;
                 case 2:
-                    langue = cheminAn;
+                    setLangue(cheminAn);
                     break;
-                case 3:
-                    exit(0);
+                default:
+                    System.out.println("Choix incorrect");
+                    choixLangue();
             }
+
         } catch (Exception ex) {
-            System.out.println("Please enter an integer value between 1 and " + options.length);
+            System.out.println("Please enter an integer value between 1 and 2");
             saisieUtilisateur.next();
+            choixLangue();
         }
-        menu(saisieUtilisateur);
+
 
     }
 
+    private static void setLangue(String str) {
+        langue = str;
+        menu();
+    }
 
-    public static void start(Scanner saisieUtilisateur) {
+
+    public static void start() {
         System.out.println("https://hellowordl.net");
         System.out.print("On joue avec des mots de " + longeur + " lettres en ");
         if (langue.equals(cheminAn)) System.out.println("anglais.");
@@ -123,9 +156,9 @@ public class ApplicationMots {
         System.out.println("Press Enter to continue");
         saisieUtilisateur.nextLine();
         saisieUtilisateur.nextLine();
-        menu(saisieUtilisateur);
-
+        menu();
     }
+
 
     private static String ouverture(MotsPossible MP) {
         HashMap<Integer, String> bestOuverture = new HashMap<>();
@@ -136,7 +169,7 @@ public class ApplicationMots {
             bestOuverture.put(5, "tares" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "4175.682");
         }
 
-        if (langue.equals(cheminFR)){
+        if (langue.equals(cheminFR)) {
             bestOuverture.put(2, "au" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "48,374");
             bestOuverture.put(3, "aie" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "374,294");
             bestOuverture.put(4, "taie" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "1929,883");
@@ -147,7 +180,7 @@ public class ApplicationMots {
         if (bestOuverture.containsKey(longeur)) {
             prop = bestOuverture.get(longeur);
             System.out.print("Meilleur ouverture : ");
-            System.out.println(ANSI_RED + prop+ ANSI_RESET + " mots éliminé.");
+            System.out.println(ANSI_RED + prop + ANSI_RESET + " mots éliminé.");
             return prop.substring(0, longeur);
         }
         prop = MP.random();
