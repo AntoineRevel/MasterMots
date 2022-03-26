@@ -61,7 +61,7 @@ public class MotsPossible {
     }
 
     public String premier() {
-        System.out.println("Il y a " + motsPossible.size() + " mots posible restant");
+        System.out.println("Il y a " + motsPossible.size() + " mots posible restants");
         System.out.println(motsPossible);
         List<HashMap<Character, Integer>> stat = new ArrayList<>(longueur);
         for (int i = 0; i < longueur; i++) {
@@ -90,7 +90,7 @@ public class MotsPossible {
         int mtm = motsPossible.size();
         int dif = avant - mtm;
         System.out.println("On avait " + avant + " mots possible et on en élimine " + ANSI_gras + dif + ANSI_RESET + ".");
-        System.out.println("On a donc " + mtm + " mots restant :");
+        System.out.println("On a donc " + mtm + " mots restants :");
         if (motsPossible.size() == 1) {
             System.out.println(ANSI_GREEN + motsPossible.get(0) + ANSI_RESET);
         }
@@ -193,13 +193,13 @@ public class MotsPossible {
             System.out.print("La meilleure proposition est ");
             System.out.print(ANSI_RED + listMeilleur.get(0) + " " + ANSI_RESET);
         } else {
-            System.out.println("Les mots qui retire le plus sont : ");
+            System.out.println("Les mots qui retirent le plus sont : ");
             for (int j = 0; j < listMeilleur.size(); j++) {
                 System.out.println((j + 1) + "- " + listMeilleur.get(j));
             }
         }
         double esp = (double) con;
-        System.out.println("avec une espérence de " + ANSI_gras + String.format("%.3f", esp) + ANSI_RESET + " mots éliminé.");
+        System.out.println("avec une espérance de " + ANSI_gras + String.format("%.3f", esp) + ANSI_RESET + " mots éliminés.");
         return listMeilleur;
     }
 

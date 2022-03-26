@@ -42,7 +42,7 @@ public class Reponse {
 
     @Override
     public String toString() {
-        return "Reponse : " + Arrays.toString(reponse);
+        return "Réponse : " + Arrays.toString(reponse);
     }
 
     enum Rep {

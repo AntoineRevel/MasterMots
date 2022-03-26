@@ -116,7 +116,7 @@ public class ApplicationMots {
         if (langue.equals(cheminFR)) System.out.println("francais.");
         MotsPossible MP = new MotsPossible(longeur, langue);
         //MP.premier(); //stat mots intéressante mais inutile
-        System.out.println("Pour coder la réponse du jeux :");
+        System.out.println("Pour coder la réponse du jeu :");
         System.out.println("0- pour une lettre qui n'est pas dans le mot (gris)");
         System.out.println("1- pour une lettre dans le mot mais pas au bon endroit (jaunes)");
         System.out.println("2- pour une lettre au bon endroit (vert)");
@@ -146,7 +146,7 @@ public class ApplicationMots {
         String rep;
         Reponse reponse;
         try {
-            System.out.print("Réponse du jeux : ");
+            System.out.print("Réponse du jeu : ");
             rep = saisieUtilisateur.next();
             if (!Reponse.verifRep(rep)) {
                 System.out.println("Entrez uniquement des valeurs comprise entre 0 et 3 (voir signification début)");
@@ -192,16 +192,16 @@ public class ApplicationMots {
     private static String ouverture(MotsPossible MP) {
         HashMap<Integer, String> bestOuverture = new HashMap<>();
         if (langue.equals(cheminAn)) {
-            bestOuverture.put(2, "ho" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "27.489");
-            bestOuverture.put(3, "eat" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "462.316");
-            bestOuverture.put(4, "sale" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "2146.642");
-            bestOuverture.put(5, "tares" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "4175.682");
+            bestOuverture.put(2, "ho" + ANSI_RESET + " avec une espérance de " + ANSI_gras + "27.489");
+            bestOuverture.put(3, "eat" + ANSI_RESET + " avec une espérance de " + ANSI_gras + "462.316");
+            bestOuverture.put(4, "sale" + ANSI_RESET + " avec une espérance de " + ANSI_gras + "2146.642");
+            bestOuverture.put(5, "tares" + ANSI_RESET + " avec une espérance de " + ANSI_gras + "4175.682");
         }
 
         if (langue.equals(cheminFR)) {
-            bestOuverture.put(2, "au" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "48,374");
-            bestOuverture.put(3, "aie" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "374,294");
-            bestOuverture.put(4, "taie" + ANSI_RESET + " avec une espérence de " + ANSI_gras + "1929,883");
+            bestOuverture.put(2, "au" + ANSI_RESET + " avec une espérance de " + ANSI_gras + "48,374");
+            bestOuverture.put(3, "aie" + ANSI_RESET + " avec une espérance de " + ANSI_gras + "374,294");
+            bestOuverture.put(4, "taie" + ANSI_RESET + " avec une espérance de " + ANSI_gras + "1929,883");
 
         }
         int longeur = MP.getLongueur();
@@ -209,17 +209,16 @@ public class ApplicationMots {
         if (bestOuverture.containsKey(longeur)) {
             prop = bestOuverture.get(longeur);
             System.out.print("Meilleur ouverture : ");
-            System.out.println(ANSI_RED + prop + ANSI_RESET + " mots éliminé.");
+            System.out.println(ANSI_RED + prop + ANSI_RESET + " mot(s) éliminé(s).");
             return prop.substring(0, longeur);
         }
         prop = MP.random();
         if (longeur == 6) {
-            System.out.println("Patience calcul de l'esperance long");
+            System.out.println("Patience calcul de l'espérance long");
             System.out.println("Proposition d'une ouverture aléatoire : " + ANSI_RED + prop + ANSI_RESET + " avec une espérence de " + ANSI_gras + String.format("%.3f", MP.calculEsperance(prop)) + ANSI_RESET + " mots éliminé.");
         } else {
             System.out.println("Proposition d'une ouverture aléatoire : " + ANSI_RED + prop + ANSI_RESET);
         }
-
         //System.out.println(prop);
         return prop;
     }
