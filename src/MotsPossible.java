@@ -26,7 +26,6 @@ public class MotsPossible {
     }
 
 
-
     private static int countOccurences(String someString, char searchedChar, int index) {
         if (index >= someString.length()) {
             return 0;
