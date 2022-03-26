@@ -1,7 +1,4 @@
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import static java.lang.System.exit;
 
@@ -23,8 +20,11 @@ public class ApplicationMots {
     private static Scanner saisieUtilisateur;
 
     public static void main(String[] args) {
+        //Mots.cleanMot(cheminFR,"ressources/motsCleanFR.txt");
         saisieUtilisateur = new Scanner(System.in);
         menu();
+
+
     }
 
     public static void printMenu(String[] options) {
@@ -40,22 +40,16 @@ public class ApplicationMots {
         printMenu(options);
         try {
             switch (saisieUtilisateur.nextInt()) {
-                case 1:
-                    start();
-                    break;
-                case 2:
-                    choixLangue();
-                    break;
-                case 3:
-                    choixLongeur();
-                    break;
-                case 4:
-                    exit(0);
-                default:
+                case 1 -> start();
+                case 2 -> choixLangue();
+                case 3 -> choixLongeur();
+                case 4 -> exit(0);
+                default -> {
                     System.out.println("Choix incorrect");
                     menu();
+                }
             }
-        } catch (InputMismatchException e){
+        } catch (InputMismatchException e) {
             System.out.println("Choix incorrect");
             saisieUtilisateur.next();
             menu();
@@ -73,7 +67,7 @@ public class ApplicationMots {
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             choixLongeur();
-        } catch (InputMismatchException e){
+        } catch (InputMismatchException e) {
             System.out.println("Entrer un nombre");
             saisieUtilisateur.next();
             choixLongeur();
@@ -94,15 +88,12 @@ public class ApplicationMots {
         try {
             System.out.print("Choix : ");
             switch (saisieUtilisateur.nextInt()) {
-                case 1:
-                    setLangue(cheminFR);
-                    break;
-                case 2:
-                    setLangue(cheminAn);
-                    break;
-                default:
+                case 1 -> setLangue(cheminFR);
+                case 2 -> setLangue(cheminAn);
+                default -> {
                     System.out.println("Choix incorrect");
                     choixLangue();
+                }
             }
 
         } catch (Exception ex) {
@@ -110,8 +101,6 @@ public class ApplicationMots {
             saisieUtilisateur.next();
             choixLangue();
         }
-
-
     }
 
     private static void setLangue(String str) {
@@ -126,37 +115,77 @@ public class ApplicationMots {
         if (langue.equals(cheminAn)) System.out.println("anglais.");
         if (langue.equals(cheminFR)) System.out.println("francais.");
         MotsPossible MP = new MotsPossible(longeur, langue);
-        //MP.premier();
+        //MP.premier(); //stat mots intéressante mais inutile
         System.out.println("Pour coder la réponse du jeux :");
         System.out.println("0- pour une lettre qui n'est pas dans le mot (gris)");
         System.out.println("1- pour une lettre dans le mot mais pas au bon endroit (jaunes)");
         System.out.println("2- pour une lettre au bon endroit (vert)");
-        String firtProp = ouverture(MP);
-        System.out.print("Réponse du jeux : ");
-        MP.elimination(new Reponse(firtProp, saisieUtilisateur.next()));
-
+        MP.elimination(choixReponse(ouverture(MP)));
         while (MP.getMotsPossible().size() > 1) {
             String prop;
             List<String> choix = MP.choix();
+            int size = choix.size();
 
-            if (choix.size() == 1) {
+            if (size == 1) {
                 prop = choix.get(0);
             } else {
-                int indice;
-                System.out.print("Numéros du mot proposé : ");
-                indice = saisieUtilisateur.nextInt();
+                int indice = choixEgaliter(size);
                 prop = choix.get(indice - 1);
                 System.out.println("Proposition : " + ANSI_RED + prop + ANSI_RESET);
             }
-            System.out.print("Réponse du jeux : ");
-            MP.elimination(new Reponse(prop, saisieUtilisateur.next()));
-
+            MP.elimination(choixReponse(prop));
         }
         System.out.println("___________________Fini !!!___________________");
         System.out.println("Press Enter to continue");
         saisieUtilisateur.nextLine();
         saisieUtilisateur.nextLine();
         menu();
+    }
+
+    private static Reponse choixReponse(String propositionMot) {
+        String rep;
+        Reponse reponse;
+        try {
+            System.out.print("Réponse du jeux : ");
+            rep = saisieUtilisateur.next();
+            if (!Reponse.verifRep(rep)) {
+                System.out.println("Entrez uniquement des valeurs comprise entre 0 et 3 (voir signification début)");
+                return choixReponse(propositionMot);
+            }
+            if (rep.length() != propositionMot.length()) {
+                System.out.println("La réponse comporte " + rep.length() + " valeurs. Or, on joue avec des mots de " + longeur + " lettres.");
+                return choixReponse(propositionMot);
+            }
+
+            return new Reponse(propositionMot, rep);
+        } catch (NoSuchElementException ex) {
+            System.out.println("Je pense pas qu'on arrive ici mais on est prudent");
+            saisieUtilisateur.next();
+            return choixReponse(propositionMot);
+        } catch (SizeReponseException ex) {
+            System.out.println(ex.getMessage());
+            saisieUtilisateur.next();
+            return choixReponse(propositionMot);
+        }
+    }
+
+    private static int choixEgaliter(int size) {
+        int indice;
+        try {
+            System.out.print("Choix : ");
+            indice = saisieUtilisateur.nextInt();
+            if (indice > size) {
+                System.out.println("Entrez un entier entre 1 et " + size);
+                return choixEgaliter(size);
+            }
+            return indice;
+        } catch (InputMismatchException exception) {
+            System.out.println("Entrez un entier entre 1 et " + size);
+            saisieUtilisateur.next();
+            return choixEgaliter(size);
+
+        }
+
     }
 
 

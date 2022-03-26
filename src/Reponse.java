@@ -1,19 +1,17 @@
 import java.util.Arrays;
 
 public class Reponse {
-
-
     private final char[] proposition;
     private final Rep[] reponse;
+
     public Reponse(String proposition, Rep[] reponse) {
         this.proposition = proposition.toCharArray();
         this.reponse = reponse;
     }
 
-
-    public Reponse(String motPropose, String rep) {
+    public Reponse(String motPropose, String rep) throws SizeReponseException {
         if (rep.length() != motPropose.length()) {
-            throw new RuntimeException("mauvaise entré utilisateur, Atendu :" + motPropose.length() + " au lieux de :" + rep.length());
+            throw new SizeReponseException("Mauvaise entré utilisateur, Attendu :" + motPropose.length() + " au lieux de :" + rep.length());
         } else {
             this.reponse = new Rep[motPropose.length()];
             this.proposition = motPropose.toCharArray();
@@ -30,6 +28,10 @@ public class Reponse {
         }
     }
 
+    public static boolean verifRep(String rep) {
+        return (rep.matches("[0-3]+"));
+    }
+
     public char getProposition(int i) {
         return proposition[i];
     }
@@ -43,14 +45,9 @@ public class Reponse {
         return "Reponse : " + Arrays.toString(reponse);
     }
 
-
     enum Rep {
         Correct,
         WrongSpot,
         NotInTheWorld,
-    }
-
-    public static String verifRep(String rep){
-        return null;
     }
 }
