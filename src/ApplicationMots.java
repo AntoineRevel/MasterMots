@@ -118,7 +118,7 @@ public class ApplicationMots {
         //MP.premier(); //stat mots intéressante mais inutile
         System.out.println("Pour coder la réponse du jeu :");
         System.out.println("0- pour une lettre qui n'est pas dans le mot (gris)");
-        System.out.println("1- pour une lettre dans le mot mais pas au bon endroit (jaunes)");
+        System.out.println("1- pour une lettre dans le mot mais pas au bon endroit (jaune)");
         System.out.println("2- pour une lettre au bon endroit (vert)");
         MP.elimination(choixReponse(ouverture(MP)));
         while (MP.getMotsPossible().size() > 1) {
